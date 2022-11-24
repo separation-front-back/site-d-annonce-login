@@ -6,10 +6,8 @@ dotenv.config()
 const app = express()
 app.use(express.json())
 app.use(cors())
+const port = process.env.SERVER_PORT || 3000
 
 app.get('/', (req, res) => res.send('🏠'))
 
-/**
- * On demande à Express d'ecouter les requêtes sur le port défini dans la config
- */
-app.listen(process.env.API_PORT, () => console.log('Silence, ça tourne.'))
+app.listen(port, () => console.log('Silence, ça tourne.' + port))
