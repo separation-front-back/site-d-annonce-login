@@ -13,10 +13,10 @@ export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number
 
-    @Column(() => String)
+    @Column()
     email: string
 
-    @Column(() => String)
+    @Column()
     password: string
 
     @BeforeUpdate()
