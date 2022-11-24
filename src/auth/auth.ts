@@ -1,6 +1,7 @@
 import passport from 'passport'
 import { Strategy } from 'passport-local'
 import { Strategy as JWTstrategy, ExtractJwt } from 'passport-jwt'
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import User from './../model/user'
 
 passport.use(
@@ -54,12 +55,10 @@ passport.use(
     )
 )
 
-// ...
-
 passport.use(
     new JWTstrategy(
         {
-            secretOrKey: 'TOP_SECRET',
+            secretOrKey: process.env.JWT_SECRET,
             jwtFromRequest: ExtractJwt.fromUrlQueryParameter('secret_token'),
         },
         async (token, done) => {
@@ -68,6 +67,21 @@ passport.use(
             } catch (error) {
                 done(error)
             }
+        }
+    )
+)
+
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID || '',
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+        },
+        function (accessToken, refreshToken, profile, cb) {
+            User.findOrCreate({ googleId: profile.id }, function (err, user) {
+                return cb(err, user)
+            })
         }
     )
 )
