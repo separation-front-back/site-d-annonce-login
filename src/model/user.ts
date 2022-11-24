@@ -19,6 +19,9 @@ export default class User extends BaseEntity {
     @Column()
     password: string
 
+    @Column()
+    googleId: string
+
     @BeforeUpdate()
     @BeforeInsert()
     async hashPassword() {

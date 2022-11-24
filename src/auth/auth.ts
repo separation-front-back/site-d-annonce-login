@@ -78,10 +78,17 @@ passport.use(
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
             callbackURL: process.env.GOOGLE_CALLBACK_URL,
         },
-        function (accessToken, refreshToken, profile, cb) {
-            User.findOrCreate({ googleId: profile.id }, function (err, user) {
-                return cb(err, user)
-            })
+        async function (accessToken, refreshToken, profile, cb) {
+            const user = await User.findOne({ where: { googleId: profile.id } })
+
+            if (!user) {
+                const newUser = new User()
+                newUser.googleId = profile.id
+                await newUser.save()
+                return cb(null, false, { message: 'User not found' })
+            }
+
+            return cb(null, user)
         }
     )
 )
