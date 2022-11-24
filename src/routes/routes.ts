@@ -2,6 +2,8 @@ import express from 'express'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 
+const secret = process.env.JWT_SECRET
+
 const router = express.Router()
 
 router.post(
@@ -28,7 +30,7 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error)
 
                 const body = { _id: user._id, email: user.email }
-                const token = jwt.sign({ user: body }, 'TOP_SECRET')
+                const token = jwt.sign({ user: body }, secret || 'secret')
 
                 return res.json({ token })
             })

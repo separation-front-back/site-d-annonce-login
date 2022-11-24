@@ -11,14 +11,15 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 const port = process.env.SERVER_PORT || 4000
+const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } = process.env
 
 const AppDataSource = new DataSource({
     type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'root',
-    database: 'database',
+    host: DB_HOST,
+    port: Number(DB_PORT),
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
+    database: DB_NAME,
     entities: ['src/model/*.ts'],
     synchronize: true,
 })
