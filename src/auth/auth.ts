@@ -1,5 +1,6 @@
 import passport from 'passport'
 import { Strategy } from 'passport-local'
+import { Strategy as JWTstrategy, ExtractJwt } from 'passport-jwt'
 import User from './../model/user'
 
 passport.use(
@@ -48,6 +49,24 @@ passport.use(
             } catch (error) {
                 console.log(error)
                 return done(error)
+            }
+        }
+    )
+)
+
+// ...
+
+passport.use(
+    new JWTstrategy(
+        {
+            secretOrKey: 'TOP_SECRET',
+            jwtFromRequest: ExtractJwt.fromUrlQueryParameter('secret_token'),
+        },
+        async (token, done) => {
+            try {
+                return done(null, token.user)
+            } catch (error) {
+                done(error)
             }
         }
     )
