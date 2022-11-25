@@ -4,6 +4,8 @@ services:
     build: 
       context: .
       dockerfile: database.Dockerfile
+    networks:
+      - global
     ports: 
       - "3306:3306"
   serv: 
@@ -12,5 +14,11 @@ services:
     build: 
       context: .
       dockerfile: backend.Dockerfile
+    networks:
+      - global
     ports: 
-      - "4000:4000"
+      - "4001:4001"
+    restart: always
+networks:
+  global:
+    name: global

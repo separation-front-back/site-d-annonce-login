@@ -16,6 +16,7 @@ passport.use(
                 const user = new User()
                 user.email = email
                 user.password = password
+                user.googleId = ''
                 await user.save()
                 return done(null, user)
             } catch (error) {

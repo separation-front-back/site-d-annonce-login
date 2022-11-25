@@ -2,7 +2,7 @@ FROM node:16
 
 WORKDIR /usr/src/app
 
-ENV SERVER_PORT=4000
+ENV SERVER_PORT=4001
 ENV DB_HOST=db
 ENV DB_PORT=3306
 ENV DB_USERNAME=root
@@ -20,6 +20,6 @@ RUN npm ci
 COPY tsconfig.json ./
 COPY src ./src
 
-EXPOSE 4000 
+EXPOSE 4001 
 
 CMD ["npm","run","dev"]
