@@ -5,20 +5,29 @@ services:
       context: .
       dockerfile: database.Dockerfile
     networks:
-      - global
+      - dblog
     ports: 
-      - "3306:3306"
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
   serv: 
     depends_on: 
-      - db
+      db:
+        condition: service_healthy
     build: 
       context: .
       dockerfile: backend.Dockerfile
     networks:
-      - global
+      - serv
+      - dblog
     ports: 
       - "4001:4001"
     restart: always
 networks:
-  global:
-    name: global
+  serv:
+    name: serv
+  dblog:
+    name: dblog
