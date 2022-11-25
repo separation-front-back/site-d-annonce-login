@@ -1,0 +1,16 @@
+--- 
+services: 
+  db: 
+    build: 
+      context: .
+      dockerfile: database.Dockerfile
+    ports: 
+      - "3306:3306"
+  serv: 
+    depends_on: 
+      - db
+    build: 
+      context: .
+      dockerfile: backend.Dockerfile
+    ports: 
+      - "4000:4000"
