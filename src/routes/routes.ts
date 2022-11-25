@@ -5,6 +5,34 @@ import jwt from 'jsonwebtoken'
 const secret = process.env.JWT_SECRET || 'secret'
 const router = express.Router()
 
+router.get('/', (req, res) => {
+    res.json({ message: 'You are not logged in' })
+})
+
+router.get('/failed', (req, res) => {
+    res.send('Failed')
+})
+router.get('/success', (req, res) => {
+    res.send(`Welcome yo`)
+})
+
+router.get(
+    '/google',
+    passport.authenticate('google', {
+        scope: ['email', 'profile'],
+    })
+)
+
+router.get(
+    '/auth/google/callback',
+    passport.authenticate('google', {
+        failureRedirect: '/failed',
+    }),
+    function (req, res) {
+        res.redirect('/success')
+    }
+)
+
 router.post(
     '/signup',
     passport.authenticate('signup', { session: false }),

@@ -3,12 +3,18 @@ import express from 'express'
 import * as dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
 import routes from './routes/routes'
+import cookieSession from 'cookie-session'
 import './auth/auth'
 dotenv.config()
 
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use(cookieSession({
+    name: 'google-auth-session',
+    keys: ['key1', 'key2']
+  }))
+  
 const port = process.env.SERVER_PORT || 4000
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } = process.env
 

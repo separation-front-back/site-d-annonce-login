@@ -71,7 +71,6 @@ passport.use(
     )
 )
 
-/*
 passport.use(
     new GoogleStrategy(
         {
@@ -80,11 +79,21 @@ passport.use(
             callbackURL: process.env.GOOGLE_CALLBACK_URL,
         },
         async function (accessToken, refreshToken, profile, cb) {
+            console.log(profile)
+            console.log(accessToken)
+            console.log(refreshToken)
+
             const user = await User.findOne({ where: { googleId: profile.id } })
 
             if (!user) {
                 const newUser = new User()
                 newUser.googleId = profile.id
+                if (profile.emails) {
+                    newUser.email = profile.emails[0].value
+                } else {
+                    newUser.email = ''
+                }
+                newUser.password = ''
                 await newUser.save()
                 return cb(null, false, { message: 'User not found' })
             }
@@ -93,5 +102,3 @@ passport.use(
         }
     )
 )
-
-*/
