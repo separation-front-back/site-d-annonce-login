@@ -4,7 +4,6 @@ import * as dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
 import routes from './routes/routes'
 import './auth/auth'
-
 dotenv.config()
 
 const app = express()

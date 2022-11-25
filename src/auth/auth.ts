@@ -34,7 +34,7 @@ passport.use(
         },
         async (email, password, done) => {
             try {
-                const user = await User.findOne({ where: { email: email } })
+                const user = await User.findOne({ where: { email } })
 
                 if (!user) {
                     return done(null, false, { message: 'User not found' })
@@ -58,7 +58,7 @@ passport.use(
 passport.use(
     new JWTstrategy(
         {
-            secretOrKey: process.env.JWT_SECRET,
+            secretOrKey: process.env.JWT_SECRET || 'secret',
             jwtFromRequest: ExtractJwt.fromUrlQueryParameter('secret_token'),
         },
         async (token, done) => {
@@ -71,6 +71,7 @@ passport.use(
     )
 )
 
+/*
 passport.use(
     new GoogleStrategy(
         {
@@ -92,3 +93,5 @@ passport.use(
         }
     )
 )
+
+*/

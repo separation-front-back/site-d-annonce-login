@@ -2,14 +2,13 @@ import express from 'express'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 
-const secret = process.env.JWT_SECRET
-
+const secret = process.env.JWT_SECRET || 'secret'
 const router = express.Router()
 
 router.post(
     '/signup',
     passport.authenticate('signup', { session: false }),
-    async (req, res, next) => {
+    async (req, res) => {
         res.json({
             message: 'Signup successful',
             user: req.user,
@@ -18,7 +17,7 @@ router.post(
 )
 
 router.post('/login', async (req, res, next) => {
-    passport.authenticate('login', async (err, user, info) => {
+    passport.authenticate('login', async (err, user) => {
         try {
             if (err || !user) {
                 const error = new Error('An error occurred.')
